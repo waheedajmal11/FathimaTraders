@@ -1,14 +1,15 @@
 const CATEGORY_COLORS = {
-  Cigarettes:    { bg: "#fee2e2", color: "#991b1b" },
-  "Pan Parag":   { bg: "#ffedd5", color: "#9a3412" },
-  Chocolates:    { bg: "#fef3c7", color: "#78350f" },
-  Chips:         { bg: "#fefce8", color: "#713f12" },
-  Biscuits:      { bg: "#dcfce7", color: "#14532d" },
-  Beverages:     { bg: "#dbeafe", color: "#1e3a8a" },
-  Confectionery: { bg: "#ede9fe", color: "#4c1d95" },
-  Dairy:         { bg: "#cffafe", color: "#164e63" },
-  Household:     { bg: "#e2e8f0", color: "#1e293b" },
-  Other:         { bg: "#f1f5f9", color: "#475569" },
+  Biscuits:          { bg: "#dcfce7", color: "#14532d" },
+  Chips:             { bg: "#fefce8", color: "#713f12" },
+  Chocolates:        { bg: "#fef3c7", color: "#78350f" },
+  Cigarettes:        { bg: "#fee2e2", color: "#991b1b" },
+  "Cold Drinks":     { bg: "#dbeafe", color: "#1e3a8a" },
+  Detergents:        { bg: "#ccfbf1", color: "#134e4a" },
+  "Masalas & Spices": { bg: "#ffedd5", color: "#9a3412" },
+  Shampoos:          { bg: "#ede9fe", color: "#4c1d95" },
+  Soaps:             { bg: "#e0f2fe", color: "#0c4a6e" },
+  Tobacco:           { bg: "#fce7f3", color: "#831843" },
+  Other:             { bg: "#f1f5f9", color: "#475569" },
 };
 
 function ItemList({ items, loading, onEdit, onDelete }) {

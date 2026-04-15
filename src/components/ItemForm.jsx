@@ -1,17 +1,5 @@
 import { useEffect, useState } from "react";
-
-const CATEGORIES = [
-  "Cigarettes",
-  "Pan Parag",
-  "Chocolates",
-  "Chips",
-  "Biscuits",
-  "Beverages",
-  "Confectionery",
-  "Dairy",
-  "Household",
-  "Other",
-];
+import { CATEGORIES } from "../constants/categories";
 
 const initialValues = {
   name: "",

@@ -7,6 +7,9 @@ import supabase from "./lib/supabase";
 function App() {
   const [items, setItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("");
+  const [sortField, setSortField] = useState("name");
+  const [sortAsc, setSortAsc] = useState(true);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [editingItem, setEditingItem] = useState(null);
@@ -24,17 +27,25 @@ function App() {
     return "";
   }, [message.type]);
 
-  const fetchItems = async (searchValue = "") => {
+  const fetchItems = async (searchValue = "", categoryValue = "", sortFieldValue = "name", sortAscValue = true) => {
     const requestId = ++latestRequestIdRef.current;
     setLoading(true);
 
     let query = supabase
       .from("items")
       .select("*")
-      .order("name", { ascending: true });
+      .order(sortFieldValue, { ascending: sortAscValue });
+
+    if (sortFieldValue === "category") {
+      query = query.order("name", { ascending: true });
+    }
 
     if (searchValue.trim()) {
       query = query.ilike("name", `%${searchValue.trim()}%`);
+    }
+
+    if (categoryValue) {
+      query = query.eq("category", categoryValue);
     }
 
     const { data, error } = await query;
@@ -56,16 +67,16 @@ function App() {
   useEffect(() => {
     if (initialLoadRef.current) {
       initialLoadRef.current = false;
-      fetchItems(searchTerm);
+      fetchItems(searchTerm, categoryFilter, sortField, sortAsc);
       return;
     }
 
     const timeoutId = setTimeout(() => {
-      fetchItems(searchTerm);
+      fetchItems(searchTerm, categoryFilter, sortField, sortAsc);
     }, 250);
 
     return () => clearTimeout(timeoutId);
-  }, [searchTerm]);
+  }, [searchTerm, categoryFilter, sortField, sortAsc]);
 
   const handleSubmit = async (payload) => {
     setSaving(true);
@@ -96,7 +107,7 @@ function App() {
       setMessage({ type: "success", text: "Item added successfully." });
     }
 
-    await fetchItems(searchTerm);
+    await fetchItems(searchTerm, categoryFilter, sortField, sortAsc);
     setSaving(false);
     return true;
   };
@@ -119,7 +130,7 @@ function App() {
     }
 
     setMessage({ type: "success", text: "Item deleted successfully." });
-    fetchItems(searchTerm);
+    fetchItems(searchTerm, categoryFilter, sortField, sortAsc);
   };
 
   const handleCancelEdit = () => {
@@ -171,7 +182,16 @@ function App() {
           </div>
         ) : null}
 
-        <SearchBar value={searchTerm} onChange={setSearchTerm} />
+        <SearchBar
+          value={searchTerm}
+          onChange={setSearchTerm}
+          categoryFilter={categoryFilter}
+          onCategoryChange={setCategoryFilter}
+          sortField={sortField}
+          onSortFieldChange={setSortField}
+          sortAsc={sortAsc}
+          onSortAscChange={setSortAsc}
+        />
 
         <ItemForm
           editingItem={editingItem}
